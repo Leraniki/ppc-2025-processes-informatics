@@ -12,7 +12,7 @@ namespace nikitina_v_trans_all_one_distrib {
 class NikitinaVRunPerfTest : public ppc::util::BaseRunPerfTests<InType, OutType> {
  public:
   void SetUp() override {
-    const int size = 1000000;
+    const int size = 20000000;
     input_data_ = std::vector<int>(size, 1);
   }
 
