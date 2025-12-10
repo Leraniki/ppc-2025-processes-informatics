@@ -1,14 +1,16 @@
 #include <gtest/gtest.h>
 
-#include <algorithm>
 #include <array>
-#include <numeric>
+#include <cstddef>
+#include <memory>
+#include <string>
 #include <tuple>
 #include <vector>
 
 #include "nikitina_v_trans_all_one_distrib/common/include/common.hpp"
 #include "nikitina_v_trans_all_one_distrib/mpi/include/ops_mpi.hpp"
 #include "nikitina_v_trans_all_one_distrib/seq/include/ops_seq.hpp"
+#include "task/include/task.hpp"
 #include "util/include/func_test_util.hpp"
 #include "util/include/util.hpp"
 
@@ -65,13 +67,11 @@ const auto kGtestValues = ppc::util::ExpandToValues(kTestTasksList);
 
 INSTANTIATE_TEST_SUITE_P(AllReduceTests, NikitinaVRunFuncTests, kGtestValues, NikitinaVRunFuncTests::PrintTestParam);
 
-TEST(NikitinaV_AllReduce_Misc, RunWithEmptyVector) {
+TEST(NikitinaVAllReduceMisc, RunWithEmptyVector) {
   std::vector<int> empty_vec;
 
   auto task_mpi = std::make_shared<TestTaskMPI>(empty_vec);
-
   ASSERT_EQ(task_mpi->GetStaticTypeOfTask(), ppc::task::TypeOfTask::kMPI);
-
   ASSERT_TRUE(task_mpi->Validation());
   task_mpi->PreProcessing();
   task_mpi->Run();
@@ -79,9 +79,7 @@ TEST(NikitinaV_AllReduce_Misc, RunWithEmptyVector) {
   ASSERT_TRUE(task_mpi->GetOutput().empty());
 
   auto task_seq = std::make_shared<TestTaskSEQ>(empty_vec);
-
   ASSERT_EQ(task_seq->GetStaticTypeOfTask(), ppc::task::TypeOfTask::kSEQ);
-
   ASSERT_TRUE(task_seq->Validation());
   task_seq->PreProcessing();
   task_seq->Run();

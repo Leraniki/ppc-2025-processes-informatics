@@ -2,8 +2,9 @@
 
 #include <mpi.h>
 
-#include <algorithm>
 #include <vector>
+
+#include "nikitina_v_trans_all_one_distrib/common/include/common.hpp"
 
 namespace nikitina_v_trans_all_one_distrib {
 
@@ -28,9 +29,10 @@ bool TestTaskMPI::RunImpl() {
 
   GetOutput().resize(GetInput().size());
 
-  MPI_Reduce(GetInput().data(), GetOutput().data(), GetInput().size(), MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+  auto size = static_cast<int>(GetInput().size());
+  MPI_Reduce(GetInput().data(), GetOutput().data(), size, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
 
-  MPI_Bcast(GetOutput().data(), GetOutput().size(), MPI_INT, 0, MPI_COMM_WORLD);
+  MPI_Bcast(GetOutput().data(), size, MPI_INT, 0, MPI_COMM_WORLD);
 
   return true;
 }

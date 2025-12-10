@@ -1,5 +1,7 @@
 #include "nikitina_v_trans_all_one_distrib/seq/include/ops_seq.hpp"
 
+#include "nikitina_v_trans_all_one_distrib/common/include/common.hpp"
+
 namespace nikitina_v_trans_all_one_distrib {
 
 TestTaskSEQ::TestTaskSEQ(const InType &in) {
@@ -20,7 +22,6 @@ bool TestTaskSEQ::RunImpl() {
   if (GetInput().empty()) {
     return true;
   }
-
   GetOutput().assign(GetInput().begin(), GetInput().end());
   return true;
 }
