@@ -8,7 +8,7 @@ TestTaskSEQ::TestTaskSEQ(const InType &in) {
 }
 
 bool TestTaskSEQ::ValidationImpl() {
-  return !GetInput().empty();
+  return true;
 }
 
 bool TestTaskSEQ::PreProcessingImpl() {
@@ -16,6 +16,12 @@ bool TestTaskSEQ::PreProcessingImpl() {
 }
 
 bool TestTaskSEQ::RunImpl() {
+  unsigned int size = GetInput().size();
+
+  if (size == 0) {
+    return true;
+  }
+
   GetOutput() = GetInput();
   return true;
 }

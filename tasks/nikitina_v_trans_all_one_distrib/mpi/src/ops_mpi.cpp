@@ -13,7 +13,7 @@ TestTaskMPI::TestTaskMPI(const InType &in) {
 }
 
 bool TestTaskMPI::ValidationImpl() {
-  return !GetInput().empty();
+  return true;
 }
 
 bool TestTaskMPI::PreProcessingImpl() {
@@ -21,9 +21,15 @@ bool TestTaskMPI::PreProcessingImpl() {
 }
 
 bool TestTaskMPI::RunImpl() {
-  GetOutput().resize(GetInput().size());
+  unsigned int size = GetInput().size();
 
-  MPI_Reduce(GetInput().data(), GetOutput().data(), GetInput().size(), MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+  if (size == 0) {
+    return true;
+  }
+
+  GetOutput().resize(size);
+
+  MPI_Reduce(GetInput().data(), GetOutput().data(), size, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
 
   MPI_Bcast(GetOutput().data(), GetOutput().size(), MPI_INT, 0, MPI_COMM_WORLD);
 
