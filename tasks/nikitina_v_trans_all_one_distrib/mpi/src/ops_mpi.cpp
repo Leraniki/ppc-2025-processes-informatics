@@ -9,7 +9,8 @@ namespace nikitina_v_trans_all_one_distrib {
 
 TestTaskMPI::TestTaskMPI(const InType &in) {
   SetTypeOfTask(GetStaticTypeOfTask());
-  GetInput() = in;
+  InType tmp = in;
+  GetInput().swap(tmp);
 }
 
 bool TestTaskMPI::ValidationImpl() {
@@ -21,15 +22,13 @@ bool TestTaskMPI::PreProcessingImpl() {
 }
 
 bool TestTaskMPI::RunImpl() {
-  unsigned int size = GetInput().size();
-
-  if (size == 0) {
+  if (GetInput().empty()) {
     return true;
   }
 
-  GetOutput().resize(size);
+  GetOutput().resize(GetInput().size());
 
-  MPI_Reduce(GetInput().data(), GetOutput().data(), size, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+  MPI_Reduce(GetInput().data(), GetOutput().data(), GetInput().size(), MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
 
   MPI_Bcast(GetOutput().data(), GetOutput().size(), MPI_INT, 0, MPI_COMM_WORLD);
 

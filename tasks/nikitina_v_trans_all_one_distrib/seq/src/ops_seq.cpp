@@ -4,7 +4,8 @@ namespace nikitina_v_trans_all_one_distrib {
 
 TestTaskSEQ::TestTaskSEQ(const InType &in) {
   SetTypeOfTask(GetStaticTypeOfTask());
-  GetInput() = in;
+  InType tmp = in;
+  GetInput().swap(tmp);
 }
 
 bool TestTaskSEQ::ValidationImpl() {
@@ -16,13 +17,11 @@ bool TestTaskSEQ::PreProcessingImpl() {
 }
 
 bool TestTaskSEQ::RunImpl() {
-  unsigned int size = GetInput().size();
-
-  if (size == 0) {
+  if (GetInput().empty()) {
     return true;
   }
 
-  GetOutput() = GetInput();
+  GetOutput().assign(GetInput().begin(), GetInput().end());
   return true;
 }
 
