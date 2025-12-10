@@ -20,7 +20,6 @@ class NikitinaVRunFuncTests : public ppc::util::BaseRunFuncTests<InType, OutType
       const testing::TestParamInfo<ppc::util::FuncTestParam<InType, OutType, TestType>> &param_info) {
     auto params = std::get<static_cast<std::size_t>(ppc::util::GTestParamIndex::kTestParams)>(param_info.param);
     auto task_type_name = std::get<static_cast<std::size_t>(ppc::util::GTestParamIndex::kNameTest)>(param_info.param);
-
     return std::get<1>(params) + "_" + task_type_name;
   }
 

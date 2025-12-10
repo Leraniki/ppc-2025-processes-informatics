@@ -21,15 +21,12 @@ bool TestTaskMPI::PreProcessingImpl() {
 }
 
 bool TestTaskMPI::RunImpl() {
-  auto input = GetInput();
-  auto size = input.size();
-  std::vector<int> res(size, 0);
+  GetOutput().resize(GetInput().size());
 
-  MPI_Reduce(input.data(), res.data(), size, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+  MPI_Reduce(GetInput().data(), GetOutput().data(), GetInput().size(), MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
 
-  MPI_Bcast(res.data(), size, MPI_INT, 0, MPI_COMM_WORLD);
+  MPI_Bcast(GetOutput().data(), GetOutput().size(), MPI_INT, 0, MPI_COMM_WORLD);
 
-  GetOutput() = res;
   return true;
 }
 
